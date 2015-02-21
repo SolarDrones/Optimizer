@@ -1,0 +1,15 @@
+load naca5412.dat
+pane
+oper
+visc
+169147.4966
+vpar
+n
+11
+
+p
+CurrentTipPolar.pol
+
+aseq -2 10 .5
+
+quit
