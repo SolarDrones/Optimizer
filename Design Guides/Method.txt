@@ -1,0 +1,4 @@
+1) Use the airfoil geom to make the geometry for the 2d airfoil
+2) Use the 2d airfoil to extrapolate into a 3d wing section
+3a) Use the 3d wing to calculate the structural loading
+3b) Use the 3d wing profile to find the locations for the masses
