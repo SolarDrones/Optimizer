@@ -329,6 +329,7 @@ def get_pressure_coefficient(panels, freestream):
 with open('naca5412.dat') as file_name:
     x, y = numpy.loadtxt(file_name, dtype = 'float', delimiter = ',', unpack = True)
 
+print type(x)
 #Plot the geometry
 val_x, val_y = 0.1, 0.2
 x_min, x_max = x.min(), x.max()
