@@ -1,33 +1,33 @@
 from openmdao.main.api import Assembly
 from openmdao.lib.drivers.api import SLSQPdriver
-from openmdao.examples.simple.paraboloid import Paraboloid
+from paraboloid import Paraboloid 
 
-class OptimizationUnconstrained(Assembly):
-    """Unconstrained optimization of the Paraboloid Component."""
+class optimization_unconstrained(Assembly):
+    """ Unconstrained optimization of the paraboloid component """
 
     def configure(self):
 
-        # Create Optimizer instance
+        #Create optimizer instance
         self.add('driver', SLSQPdriver())
 
-        # Create Paraboloid component instances
+        #Create paraboloid instance
         self.add('paraboloid', Paraboloid())
 
-        # Iteration Hierarchy
+        #Iteration hierarchy
         self.driver.workflow.add('paraboloid')
 
-        # SLSQP Flags
+        #SLSQP flags
         self.driver.iprint = 0
 
-        # Objective
+        #Objective function
         self.driver.add_objective('paraboloid.f_xy')
 
-        # Design Variables
-        self.driver.add_parameter('paraboloid.x', low=-50., high=50.)
-        self.driver.add_parameter('paraboloid.y', low=-50., high=50.)
+        #Design variables
+        self.driver.add_parameter('paraboloid.x', low = -50.0, high = 50.0)
+        self.driver.add_parameter('paraboloid.y', low = -50.0, high = 50.0)
 
-if __name__ == "__main__":
-    opt_problem = OptimizationUnconstrained()
+if __name__ == '__main__':
+    opt_problem = optimization_unconstrained()
 
     import time
     tt = time.time()
@@ -37,4 +37,3 @@ if __name__ == "__main__":
     print "\n"
     print "Minimum found at (%f, %f)" % (opt_problem.paraboloid.x, opt_problem.paraboloid.y)
     print "Elapsed time: ", time.time()-tt, "seconds"
-
