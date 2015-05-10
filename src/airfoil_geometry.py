@@ -14,7 +14,9 @@ class Airfoil_Geometry(Component):
 
     Inputs
     ------
-    x, y coordinates of the airfoil
+    x, y = Coordinates of the airfoil
+    u_inf = Freestream velocity
+    alpha = Angle of attack of the airfoil
 
     Outputs
     -------
@@ -25,12 +27,16 @@ class Airfoil_Geometry(Component):
     #Inputs
     x = Array(iotype='input', desc='The x coordinates of the airfoils')
     y = Array(iotype='input', desc='The y coordinates of the airfoils')
+    u_inf = Float(iotype='input', desc='The freestream velocity')
+    alpha = Float(iotype='input', desc='Angle of attack')
 
-    #O
+    #Outputs
 
     def execute(self):
         x = self.x
         y = self.y
+        u_inf = self.u_inf
+        alpha = self.alpha
 
 
 
@@ -375,6 +381,6 @@ def get_pressure_coefficient(panels, freestream):
     panels -- array of panels.
     freestream -- farfield conditions.
     """
-    
+
     for panel in panels:
         panel.cp = 1.0 - (panel.vt/freestream.u_inf)**2
