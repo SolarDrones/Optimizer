@@ -1,7 +1,7 @@
 # This is the main and assembly for the solar optimization problem
 
 import time
-import Airfoil_Geometry
+import airfoil_geometry
 from openmdao.main.api import Assembly
 from openmdao.lib.drivers.api import CONMINdriver
 
@@ -10,7 +10,7 @@ class SolarOptimization(Assembly):
     def configure(self):
 
         # Create driver instance
-        self.add('driver', CONMINdriver)
+        self.add('driver', CONMINdriver())
 
         # Create component instances and their constraints
         # Airfoil Geometry
@@ -25,8 +25,11 @@ class SolarOptimization(Assembly):
         # Iteration Hierarchy
         self.driver.workflow.add('airfoil')
 
-        # CONMIN Flags
-        self.driver.iprint = 0
+        # CONMIN Flags and Settings
+        self.driver.iprint = 0      # Surpress output
+        self.driver.itmax = 30      # Max number of iterations
+        self.driver.fdch = .0001    # Step size relative to the design variable
+        self.driver.fdchm = .0001   # Minimum absolute step size that the finite difference will use
 
         # Objective
         self.driver.add_objective('airfoil.cl')

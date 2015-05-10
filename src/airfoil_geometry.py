@@ -29,7 +29,9 @@ class Airfoil_Geometry(Component):
     x = Array(x_init, iotype='input', desc='The x coordinates of the airfoils')
     y = Array(y_init, iotype='input', desc='The y coordinates of the airfoils')
     u_inf = Float(10., iotype='input', units='m/s', desc='The freestream velocity')
-    alpha = Float(0., iotype='input', units='degrees' desc='Angle of attack')
+    alpha = Float(0., iotype='input', units='deg', desc='Angle of attack')
+
+    print x
 
     # Outputs
     cl = Float(0., iotype='output', units='unitless', desc='Coefficient of lift')
