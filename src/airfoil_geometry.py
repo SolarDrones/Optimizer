@@ -1,5 +1,5 @@
-#Finds a geometry for the airfoil using the source-vortex panel method
-#Starts with a NACA5412
+# Finds a geometry for the airfoil using the source-vortex panel method
+# Starts with a NACA5412
 
 import math
 import numpy
@@ -23,15 +23,15 @@ class Airfoil_Geometry(Component):
     cl = Coefficient of lift for the airfoil
     """
 
-    #Setup the framework
-    #Inputs
+    # Setup the framework
+    # Inputs
     x_init, y_init = numpy.loadtxt('naca5412.dat', dtype = 'float', delimiter = ',', unpack = True)
     x = Array(x_init, iotype='input', desc='The x coordinates of the airfoils')
     y = Array(y_init, iotype='input', desc='The y coordinates of the airfoils')
     u_inf = Float(10., iotype='input', units='m/s', desc='The freestream velocity')
     alpha = Float(0., iotype='input', units='degrees' desc='Angle of attack')
 
-    #Outputs
+    # Outputs
     cl = Float(0., iotype='output', units='unitless', desc='Coefficient of lift')
 
     def execute(self):
@@ -40,14 +40,14 @@ class Airfoil_Geometry(Component):
         u_inf = self.u_inf
         alpha = self.alpha
 
-        #Apply panels to the geometry
-        N = 50  #Number of panels
-        panels = define_panels(x, y, N)  #Discretizes of the geometry into panels
+        # Apply panels to the geometry
+        N = 50  # Number of panels
+        panels = define_panels(x, y, N)  # Discretizes of the geometry into panels
 
-        #Defines and creates the object freestream
+        # Defines and creates the object freestream
         freestream = Freestream(u_inf, alpha)
 
-        #Builds the panel matricies
+        # Builds the panel matricies
         A = build_matrix(panels)           # calculates the singularity matrix
         b = build_rhs(panels, freestream)  # calculates the freestream RHS
 
@@ -58,16 +58,16 @@ class Airfoil_Geometry(Component):
             panel.sigma = variables[i]
         gamma = variables[-1]
 
-        #Computes the tangential velocity at each panel center.
+        # Computes the tangential velocity at each panel center.
         get_tangential_velocity(panels, freestream, gamma)
 
-        #Computes surface pressure coefficient
+        # Computes surface pressure coefficient
         get_pressure_coefficient(panels, freestream)
 
-        #Calculates the accuracy
+        # Calculates the accuracy
         accuracy = sum([panel.sigma*panel.length for panel in panels])
 
-        #Calculates of the coefficient of lift
+        # Calculates of the coefficient of lift
         self.cl = gamma*sum(panel.length for panel in panels)/(0.5*freestream.u_inf*(x_max-x_min))
 
 
