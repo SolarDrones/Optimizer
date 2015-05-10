@@ -1,4 +1,4 @@
-#This is the main and assembly for the solar optimization problem
+# This is the main and assembly for the solar optimization problem
 
 import time
 import Airfoil_Geometry
@@ -9,18 +9,27 @@ class SolarOptimization(Assembly):
     """This is the main assembly for the optimization of the solar UAV"""
     def configure(self):
 
-        #Create driver instance
+        # Create driver instance
         self.add('driver', CONMINdriver)
 
-        #Create component instances and their constraints
-        #Airfoil Geometry
+        # Create component instances and their constraints
+        # Airfoil Geometry
         self.add('airfoil', Airfoil_Geometry())
 
-        #Constrain the airfcraft to fly between 5 and 15 m/s
+        # Constrain the airfcraft to fly between 5 and 15 m/s
         self.driver.add_parameter('airfoil.u_inf', low=5., high=15.)
 
-        #Constrain the angle of attack to be between -2 and 8 degrees
+        # Constrain the angle of attack to be between -2 and 8 degrees
         self.driver.add_parameter('airfoil.alpha', low=-2., high=8.)
+
+        # Iteration Hierarchy
+        self.driver.workflow.add('airfoil')
+
+        # CONMIN Flags
+        self.driver.iprint = 0
+
+        # Objective
+        self.driver.add_objective('airfoil.cl')
 
 
 
@@ -28,10 +37,14 @@ class SolarOptimization(Assembly):
 if __name__ == '__main__':
     """The main for the program to run"""
 
-    #Define the problem
+    # Define the problem
     opt_problem = SolarOptimization()
 
-    #Time the solution
+    # Time the and run solution
     tt = time.time()
-
     opt_problem.run()
+
+    # Print the results
+    print "\n"
+    print "Solution: " % (opt_problem.airfoil.cl)
+    print "Elapsed time: ", time.time()-tt, "seconds"
