@@ -10,9 +10,9 @@ from openmdao.lib.datatypes.api import Array, Float
 
 class Airfoil_Geometry(Component):
     """
-    #This is the OpenMDAO component that descirbes the airfoil geometry
-    #Inputs: x and y coordinates of the airfoil
-    #Outputs:
+    This is the OpenMDAO component that descirbes the airfoil geometry
+    Inputs: x and y coordinates of the airfoil
+    Outputs:
     """
 
     #Setup the framework
@@ -34,7 +34,8 @@ class Airfoil_Geometry(Component):
 class Panel:
     """Contains information related to one panel."""
     def __init__(self, xa, ya, xb, yb):
-        """Creates a panel.
+        """
+        Creates a panel.
 
         Arguments
         ---------
