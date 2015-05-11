@@ -26,21 +26,25 @@ class Airfoil_Geometry(Component):
     # Setup the framework
     # Inputs
     x_init, y_init = numpy.loadtxt('naca5412.dat', dtype = 'float', delimiter = ',', unpack = True)
-    x = Array(x_init, iotype='input', desc='The x coordinates of the airfoils')
-    y = Array(y_init, iotype='input', desc='The y coordinates of the airfoils')
-    u_inf = Float(10., iotype='input', units='m/s', desc='The freestream velocity')
-    alpha = Float(0., iotype='input', units='deg', desc='Angle of attack')
-
-    print x
+    x = Array(x_init, iotype='in', desc='The x coordinates of the airfoils')
+    y = Array(y_init, iotype='in', desc='The y coordinates of the airfoils')
+    u_inf = Float(10., iotype='in', units='m/s', desc='The freestream velocity')
+    alpha = Float(0., iotype='in', units='deg', desc='Angle of attack')
 
     # Outputs
-    cl = Float(0., iotype='output', units='unitless', desc='Coefficient of lift')
+    cl = Float(0., iotype='out', units='unitless', desc='Coefficient of lift')
 
     def execute(self):
         x = self.x
         y = self.y
         u_inf = self.u_inf
         alpha = self.alpha
+
+        val_x, val_y = 0.1, 0.2
+        x_min, x_max = x.min(), x.max()
+        y_min, y_max = y.min(), y.max()
+        x_start, x_end = x_min-val_x*(x_max-x_min), x_max+val_x*(x_max-x_min)
+        y_start, y_end = y_min-val_y*(y_max-y_min), y_max+val_y*(y_max-y_min)
 
         # Apply panels to the geometry
         N = 50  # Number of panels
@@ -71,6 +75,8 @@ class Airfoil_Geometry(Component):
 
         # Calculates of the coefficient of lift
         self.cl = gamma*sum(panel.length for panel in panels)/(0.5*freestream.u_inf*(x_max-x_min))
+
+        print y
 
 
 class Panel:
