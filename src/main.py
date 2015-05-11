@@ -1,11 +1,9 @@
 # This is the main and assembly for the solar optimization problem
 
-import os
 import time
 from airfoil_geometry import Airfoil_Geometry
 from openmdao.main.api import Assembly
 from openmdao.lib.drivers.api import CONMINdriver
-from openmdao.lib.casehandlers.api import JSONCaseRecorder
 
 class SolarOptimization(Assembly):
     """This is the main assembly for the optimization of the solar UAV"""
@@ -35,18 +33,11 @@ class SolarOptimization(Assembly):
         # Objective
         self.driver.add_objective('airfoil.cl')
 
-        # Add in case recorder
-        self.recorders = [JSONCaseRecorder('optimizer.json')]
-
 
 
 
 if __name__ == '__main__':
     """The main for the program to run"""
-
-    # Clear for the case recorders
-    if os.path.exists('optimizer.json'):
-        os.remove('optimizer.json')
 
     # Define the problem
     opt_problem = SolarOptimization()
