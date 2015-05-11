@@ -76,7 +76,7 @@ class Airfoil_Geometry(Component):
         # Calculates of the coefficient of lift
         self.cl = gamma*sum(panel.length for panel in panels)/(0.5*freestream.u_inf*(x_max-x_min))
 
-        print y
+        
 
 
 class Panel:
