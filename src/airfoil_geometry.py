@@ -4,7 +4,6 @@
 import math
 import numpy
 from scipy import integrate
-from matplotlib import pyplot
 from openmdao.main.api import Component
 from openmdao.lib.datatypes.api import Array, Float
 
@@ -15,8 +14,8 @@ class Airfoil_Geometry(Component):
     Inputs
     ------
     x, y = Coordinates of the airfoil
-    u_inf = Freestream velocity
-    alpha = Angle of attack of the airfoil
+    u_inf = Freestream velocity (m/s)
+    alpha = Angle of attack of the airfoil (deg)
 
     Outputs
     -------
