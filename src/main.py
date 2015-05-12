@@ -2,6 +2,7 @@
 
 import time
 from airfoil_geometry import Airfoil_Geometry
+from atmospheric_conditions import Atmospheric_Conditions
 from openmdao.main.api import Assembly
 from openmdao.lib.drivers.api import CONMINdriver
 
@@ -18,7 +19,7 @@ class SolarOptimization(Assembly):
         # Airfoil Geometry
         self.add('airfoil', Airfoil_Geometry())
         # Constrain the airfcraft to fly between 5 and 15 m/s
-        self.driver.add_parameter('airfoil.u_inf', low = 5.0, high = 15.0)
+        self.driver.add_parameter('airfoil.u_inf', low=5., high=15.)
 
         # Constrain the angle of attack to be between -2 and 8 degrees
         self.driver.add_parameter('airfoil.alpha', low=-2., high=8.)
@@ -27,8 +28,14 @@ class SolarOptimization(Assembly):
         # Also add a 1000x scaler since the size is orders of magnitude smaller
         self.driver.add_parameter('airfoil.y', low=-1., high=1., scaler=1000.)
 
+        # Atmospheric Conditions
+        self.add('conditions', Atmospheric_Conditions())
+
+        # Constrain the operating altitude to be between 10 and 2500m
+        self.driver.add_parameter('conditions.altitude', low=10., high=2500.)
+
         # Iteration Hierarchy
-        self.driver.workflow.add('airfoil')
+        self.driver.workflow.add(['airfoil', 'conditions'])
 
         # Objective
         self.driver.add_objective('airfoil.cl')
