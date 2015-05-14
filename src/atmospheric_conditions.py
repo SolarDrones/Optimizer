@@ -25,8 +25,7 @@ class Atmospheric_Conditions(Component):
     rho = Float(0., iotype='out', units='kg/m**3', desc='The density of air')
 
     def execute(self):
-        altitude = self.altitude
-        self.rho = calculate_density(altitude)
+        self.rho = calculate_density(self.altitude)
 
 
 
